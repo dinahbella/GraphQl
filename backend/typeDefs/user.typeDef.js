@@ -1,6 +1,6 @@
-const { gql } = require("@apollo/client");
+// import { gql } from "@apollo/client";
 
-const userTypeDef = gql`
+const userTypeDef = `
   type User {
     _id: ID!
     username: String!
@@ -35,3 +35,5 @@ const userTypeDef = gql`
     message: String!
   }
 `;
+
+export default userTypeDef;

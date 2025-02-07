@@ -1,16 +1,35 @@
-const express = require("express");
-const { ApolloServer, gql } = require("apollo-server-express");
-import { mergeResolvers } from "./resolvers";
-import { mergeTypes } from "./typeDefs";
-
-const server = new ApolloServer({
-  typeDefs: mergeTypes,
-  resolvers: mergeResolvers,
-});
+import { ApolloServer } from "@apollo/server";
+import { Mresolvers } from "./resolvers/index.js";
+import mTypes from "./typeDefs/index.js";
+import { startStandaloneServer } from "@apollo/server/standalone";
+import { expressMiddleware } from "@apollo/server/express4";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import express from "express";
+import http from "http";
+import cors from "cors";
 
 const app = express();
-server.applyMiddleware({ app });
 
-app.listen({ port: 4000 }, () =>
-  console.log("Now browse to http://localhost:4000" + server.graphqlPath)
+const httpServer = http.createServer(app);
+
+const server = new ApolloServer({
+  typeDefs: mTypes,
+  resolvers: Mresolvers,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+});
+await server.start();
+
+app.use(
+  "/",
+  cors(),
+  express.json(),
+  // expressMiddleware accepts the same arguments:
+  // an Apollo Server instance and optional configuration options
+  expressMiddleware(server, {
+    context: async ({ req }) => ({ req }),
+  })
 );
+
+// Modified server startup
+await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
+console.log(`🚀 Server ready at http://localhost:4000/`);

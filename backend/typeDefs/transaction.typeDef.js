@@ -1,4 +1,4 @@
-const transactionTypeDef = gql`
+const transactionTypeDef = `
   type Transaction {
     _id: ID!
     userId: ID!
@@ -15,7 +15,7 @@ const transactionTypeDef = gql`
   }
   type Mutation {
     createTransaction(input: CreateTransactionInput!): Transaction
-    updateTransaction(input: ID!, input: UpdateTransactionInput!): Transaction
+  updateTransaction(input: UpdateTransactionInput): Transaction
     deleteTransaction(transactionId: ID!): Transaction
   }
   input CreateTransactionInput {
@@ -36,3 +36,5 @@ const transactionTypeDef = gql`
     date: String
   }
 `;
+
+export default transactionTypeDef;

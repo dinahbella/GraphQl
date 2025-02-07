@@ -1,7 +1,6 @@
-const { mergeResolvers } = require("@graphql-tools/merge");
-import userResolver from "./user.resolver";
-import transactionResolver from "./transaction.resolver";
+import { mergeResolvers } from "@graphql-tools/merge";
+import userResolver from "./user.resolver.js";
+import transactionResolver from "./transaction.resolver.js";
 
-const mergeResolvers = mergeResolvers([userResolver, transactionResolver]);
-
-export default mergeResolvers;
+// Use a different variable name for the merged resolvers
+export const Mresolvers = mergeResolvers([userResolver, transactionResolver]);
