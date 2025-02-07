@@ -1,19 +1,12 @@
 const express = require("express");
 const { ApolloServer, gql } = require("apollo-server-express");
+import { mergeResolvers } from "./resolvers";
+import { mergeTypes } from "./typeDefs";
 
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: () => "Hello world!",
-  },
-};
-
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+  typeDefs: mergeTypes,
+  resolvers: mergeResolvers,
+});
 
 const app = express();
 server.applyMiddleware({ app });
