@@ -11,8 +11,11 @@ import { connectDB } from "./db/connectDB.js";
 import passport from "passport";
 import session from "express-session";
 import connectMongo from "connect-mongodb-session";
+import { buildContext } from "graphql-passport";
+import { configurePassport } from "./passport/passport.js";
 
 dotenv.config();
+configurePassport();
 
 const app = express();
 
@@ -54,12 +57,15 @@ const server = new ApolloServer({
 await server.start();
 app.use(
   "/",
-  cors(),
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
   express.json(),
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
-    context: async ({ req, res }) => ({ req, res }),
+    context: async ({ req, res }) => buildContext({ req, res }),
   })
 );
 
