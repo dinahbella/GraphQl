@@ -10,7 +10,6 @@ function App() {
   const authUser = true;
   return (
     <>
-      <h1 className="text-3xl font-bold underline text-purple-600">Dinah</h1>
       {authUser && <Header />}
       {/* {authUser && <Header />} */}
       <Routes>
