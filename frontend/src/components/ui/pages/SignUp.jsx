@@ -13,7 +13,9 @@ const SignUp = () => {
     password: "",
     gender: "",
   });
-  const [signUp, { data, loading, error }] = useMutation(SIGN_UP);
+  const [signUp, { data, loading, error }] = useMutation(SIGN_UP, {
+    refetchQueries: ["GetAuthUser"],
+  });
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -107,6 +109,9 @@ const SignUp = () => {
                 >
                   {loading ? "Loading..." : "Sign Up"}
                 </button>
+                {error && (
+                  <p className="text-red-500 text-sm mt-2">{error.message}</p>
+                )}
               </div>
             </form>
             <div className="mt-4 text-sm text-gray-600 text-center">
