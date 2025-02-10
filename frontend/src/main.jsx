@@ -4,12 +4,26 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { DotBackground } from "./components/ui/DotBackground.jsx";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+} from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: "https://localhost:4000/graphql",
+  cache: new InMemoryCache(),
+  credentials: "include",
+});
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <DotBackground>
-        <App />
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
       </DotBackground>
     </BrowserRouter>
   </StrictMode>
